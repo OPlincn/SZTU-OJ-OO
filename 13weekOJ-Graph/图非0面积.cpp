@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
 void DFS(vector<vector<int>>& grid, int i, int j, int m, int n) {

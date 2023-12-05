@@ -5,11 +5,12 @@
 using namespace std;
 
 // 进行深度优先搜索
+// v是首个节点
 void DFS(int v, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<int>& result) {
     visited[v] = true; // 标记当前节点为已访问
-    result.push_back(v); // 将当前节点添加到结果列表中
+    result.push_back(v); // 将当前节点添加到结果列表中, 不需要那个出栈步骤了, 递归代替
 
-    // 遍历与当前节点相邻的所有节点
+    // 遍历与当前节点相邻的所有节点, 一路走到好
     for (int i = 0; i < adjMatrix[v].size(); i++) {
         // 如果存在一条边，并且相邻节点未被访问，则递归调用DFS
         if (adjMatrix[v][i] == 1 && !visited[i]) {
@@ -17,7 +18,6 @@ void DFS(int v, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<in
         }
     }
 }
-
 
 void BFS(int start, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<int>& result) {
     queue<int> q; // 创建一个队列用于存储待访问的节点
