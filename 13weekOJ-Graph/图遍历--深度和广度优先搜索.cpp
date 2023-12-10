@@ -8,9 +8,10 @@ using namespace std;
 // v是首个节点
 void DFS(int v, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<int>& result) {
     visited[v] = true; // 标记当前节点为已访问
-    result.push_back(v); // 将当前节点添加到结果列表中, 不需要那个出栈步骤了, 递归代替
+    result.push_back(v); // 将当前节点添加到结果列表中, 一见到就可以加入到结果里面了, 这就是深度优先
 
-    // 遍历与当前节点相邻的所有节点, 一路走到好
+    // 遍历与当前节点相邻的所有节点, 一路走到底, 在邻接矩阵中, 子节点正是一行中值为1的哪些节点.
+    // 这里这样递归, 不需要用到stack, 就可以实现. 因为每次找不到子节点它就退出了, 相当于栈中的出栈过程
     for (int i = 0; i < adjMatrix[v].size(); i++) {
         // 如果存在一条边，并且相邻节点未被访问，则递归调用DFS
         if (adjMatrix[v][i] == 1 && !visited[i]) {
@@ -19,6 +20,7 @@ void DFS(int v, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<in
     }
 }
 
+// 这个BFS没有用到递归.
 void BFS(int start, vector<vector<int>>& adjMatrix, vector<bool>& visited, vector<int>& result) {
     queue<int> q; // 创建一个队列用于存储待访问的节点
     q.push(start); // 将起始节点加入队列
@@ -29,7 +31,7 @@ void BFS(int start, vector<vector<int>>& adjMatrix, vector<bool>& visited, vecto
         q.pop(); // 将该节点从队列中移除
         result.push_back(v); // 将该节点添加到结果列表中
 
-        // 遍历与节点v相邻的所有节点
+        // 遍历与节点v相邻的所有节点, 因为v被出队列了, 那么就应该把v的子节点加到队列里面去
         for (int i = 0; i < adjMatrix[v].size(); i++) {
             // 如果存在一条边，并且相邻节点未被访问
             if (adjMatrix[v][i] == 1 && !visited[i]) {
@@ -59,7 +61,7 @@ int main() {
             }
         }
 
-        // 对于每个节点，如果它未被访问，则从该节点开始执行DFS
+        // 对于每个节点，如果它未被访问，则从该节点开始执行BFS, 为什么要这么做呢, 因为有可能图里有几个连通分量
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
                 BFS(i, adjMatrix, visited, result);
